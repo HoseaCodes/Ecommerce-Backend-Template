@@ -64,14 +64,14 @@ async function getProducts(req, res) {
 
 async function createProducts(req, res) {
     try {
-        const { product_id, title, price, description, content, images, category } = req.body;
+        const { product_id, title, price, description, content, images } = req.body;
         if (!images) return res.status(400).json({ msg: "No image upload" })
 
         const product = await Products.findOne({ product_id })
         if (product) return res.status(400).json({ msg: "This product already exists." })
 
         const newProduct = new Products({
-            product_id, title: title.toLowerCase(), price, description, content, images, category
+            product_id, title: title.toLowerCase(), price, description, content, images
         })
 
         await newProduct.save()
@@ -94,11 +94,11 @@ async function deleteProducts(req, res) {
 
 async function updateProducts(req, res) {
     try {
-        const { title, price, description, content, images, category } = req.body;
+        const { title, price, description, content, images } = req.body;
         if (!images) return res.status(400).json({ msg: "No image upload" })
 
         await Products.findOneAndUpdate({ _id: req.params.id }, {
-            title: title.toLowerCase(), price, description, content, images, category
+            title: title.toLowerCase(), price, description, content, images
         })
         res.json({ msg: 'Updated a product' })
     } catch (err) {
